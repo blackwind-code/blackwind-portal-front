@@ -1,7 +1,8 @@
 import create from "zustand";
 import PocketBase from "pocketbase";
 
-const client = new PocketBase("http://10.150.20.20:8090");
+
+const client = new PocketBase(process.env.NODE_ENV === "production" ? window.location.origin : "http://10.150.20.20:8090");
 
 type UseAuthStore = {
   isLogin: boolean;

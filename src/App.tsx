@@ -2,11 +2,8 @@ import { useEffect, useRef } from "react";
 import {
   Routes,
   Route,
-  Link,
   useNavigate,
   useLocation,
-  Navigate,
-  Outlet,
   BrowserRouter,
 } from "react-router-dom";
 import "./App.css";
@@ -16,6 +13,7 @@ import LoginPage from "./route/LoginPage";
 import MainPage from "./route/MainPage";
 import Page404 from "./route/Page404";
 import UserPage from "./route/UserPage";
+import VPNPage from "./route/VPNPage";
 import { useAuthStore } from "./store/authStore";
 
 function App() {
@@ -28,6 +26,7 @@ function App() {
           <Route path="/" element={<LoginPage />} />
           <Route path="/main" element={<MainPage />} />
           <Route path="/user" element={<UserPage />} />
+          <Route path="/vpn" element={<VPNPage />} />
           <Route path="/*" element={<Page404 />} />
         </Routes>
       </div>
@@ -60,7 +59,7 @@ function LoginContext() {
       }
       requestRef.current = false;
     })();
-  }, [client.authStore]);
+  }, [client.authStore, location.pathname, navigate, client.users]);
 
   return null;
 }

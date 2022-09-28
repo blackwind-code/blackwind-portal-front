@@ -1,10 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { ClientResponseError } from "pocketbase";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import DGISTPNG from "../asset/DGIST.png";
 import LoginBackground from "../asset/LoginBackground.jpg";
 import { useAuthStore } from "../store/authStore";
 import { NoSelect } from "../style";
+import { alertError } from "../util/error";
 
 const Wrap = styled.div`
   position: relative;
@@ -103,11 +105,7 @@ const Link = styled.span`
 `;
 
 export default function LoginPage() {
-  const client = useAuthStore((store) => store.client);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const navigate = useNavigate();
+  const [isSignUp, setIsSignUp] = useState(false);
 
   return (
     <Wrap>
@@ -116,40 +114,127 @@ export default function LoginPage() {
         <LogoWrap>
           <Logo src={DGISTPNG} draggable={false}></Logo>
         </LogoWrap>
-        <LoginCont>
-          <Title>Email :</Title>
-          <Input
-            placeholder="email"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
-          <Title>Password :</Title>
-          <Input
-            type="password"
-            placeholder="password"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          />
-          <Link>Forgot password?</Link>{/**TODO: forgot password */}
-          <LoginButton
-            style={{ marginTop: 12 }}
-            onClick={async () => {
-              try {
-                await client.users.authViaEmail(email, password);
-                navigate("/main");
-              } catch (e) {
-                console.log(e);
-                alert("이메일과 비밀번호가 맞지 않습니다.");
-              }
-            }}
-          >
-            <span>Sign In</span>
-          </LoginButton>
-        </LoginCont>
-        <Link style={{ marginTop: 36 }}>Sign Up</Link>{/**TODO: sign up */}
+        {isSignUp ? <SignUp /> : <SignIn />}
+        {!isSignUp && (
+          <Link onClick={() => setIsSignUp(true)} style={{ marginTop: 36 }}>
+            Sign Up
+          </Link>
+        )}
+        {/**TODO: sign up */}
       </Cont>
     </Wrap>
+  );
+}
+function SignIn() {
+  const client = useAuthStore((store) => store.client);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  return (
+    <LoginCont>
+      <Title>Email :</Title>
+      <Input
+        placeholder="email"
+        value={email ?? ""}
+        onChange={(e) => {
+          setEmail(e.target.value);
+        }}
+      />
+      <Title>Password :</Title>
+      <Input
+        type="password"
+        value={password ?? ""}
+        placeholder="password"
+        onChange={(e) => {
+          setPassword(e.target.value);
+        }}
+      />
+      <Link
+        onClick={async () => {
+          try {
+            await client.users.requestPasswordReset(email);
+            alert(`${email}을 확인하세요.`);
+          } catch (e) {
+            alertError(e as ClientResponseError);
+          }
+        }}
+      >
+        Forgot password?
+      </Link>
+      <LoginButton
+        style={{ marginTop: 12 }}
+        onClick={async () => {
+          try {
+            const res = await client.users.authViaEmail(email, password);
+            console.log(res);
+
+            navigate("/main");
+          } catch (e: any) {
+            alertError(e as ClientResponseError);
+          }
+        }}
+      >
+        <span>Sign In</span>
+      </LoginButton>
+    </LoginCont>
+  );
+}
+
+function SignUp() {
+  const client = useAuthStore((store) => store.client);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+
+  const navigate = useNavigate();
+  return (
+    <LoginCont>
+      <Title>Email :</Title>
+      <Input
+        placeholder="email"
+        value={email ?? ""}
+        onChange={(e) => {
+          setEmail(e.target.value);
+        }}
+      />
+      <Title>Password :</Title>
+      <Input
+        type="password"
+        placeholder="password"
+        value={password ?? ""}
+        onChange={(e) => {
+          setPassword(e.target.value);
+        }}
+      />
+      <Title>Password Confirm:</Title>
+      <Input
+        type="password"
+        placeholder="password confirm"
+        value={passwordConfirm ?? ""}
+        onChange={(e) => {
+          setPasswordConfirm(e.target.value);
+        }}
+      />
+      <LoginButton
+        style={{ marginTop: 12 }}
+        onClick={async () => {
+          try {
+            const user = await client.users.create({
+              email: email,
+              password: password,
+              passwordConfirm: passwordConfirm,
+            });
+            await client.users.requestVerification(user.email);
+            alert(`${email}의 메일함을 확인해주세요`);
+            navigate(0);
+          } catch (e: any) {
+            alertError(e as ClientResponseError);
+          }
+        }}
+      >
+        <span>Sign Up</span>
+      </LoginButton>
+    </LoginCont>
   );
 }

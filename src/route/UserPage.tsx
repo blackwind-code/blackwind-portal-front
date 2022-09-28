@@ -1,8 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { ClientResponseError } from "pocketbase";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAuthStore } from "../store/authStore";
 import { NoSelect } from "../style";
+import { alertError } from "../util/error";
 import { getIdByToken } from "../util/token";
 
 const Cont = styled.div`
@@ -26,15 +28,6 @@ const Title = styled.div`
   ${NoSelect}
 `;
 
-const Back = styled.a`
-  margin-top: 30px;
-  font-size: 16px;
-  color: black;
-  cursor: pointer;
-  &:hover {
-    text-decoration: underline;
-  }
-`;
 const Button = styled.div`
   width: 240px;
   background-color: #3d62a4;
@@ -47,7 +40,6 @@ const Button = styled.div`
   font-weight: bold;
   cursor: pointer;
 `;
-
 export default function UserPage() {
   const navigate = useNavigate();
   const client = useAuthStore((store) => store.client);
@@ -69,10 +61,12 @@ export default function UserPage() {
         );
         console.log(res);
         setEmail(res.email);
-      } catch {}
+      } catch (e: any) {
+        alertError(e as ClientResponseError);
+      }
       requesting.current = true;
     })();
-  }, [client.authStore.token]);
+  }, [client.users, client.authStore.token, email.length]);
 
   return (
     <Cont>
@@ -82,13 +76,13 @@ export default function UserPage() {
         <Button
           onClick={async () => {
             try {
-              const userAuthData1 = await client.users.requestPasswordReset(
-                email
-              );
-              alert(`${email}을 확인하세요.`);
+              await client.users.requestPasswordReset(email);
+              alert(`${email}의 메일함을 확인해주세요`);
               await client.authStore.clear();
               navigate("/");
-            } catch (e) {}
+            } catch (e: any) {
+              alertError(e as ClientResponseError);
+            }
           }}
         >
           비밀변경
