@@ -63,6 +63,7 @@ const Button = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: 3px;
   cursor: pointer;
 `;
 
