@@ -1,5 +1,5 @@
 import { ClientResponseError } from "pocketbase";
-import { useState } from "react";
+import { KeyboardEvent, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import DGISTPNG from "../asset/DGIST.png";
@@ -131,6 +131,26 @@ function SignIn() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  const login = useCallback(async () => {
+    try {
+      await client.users.authViaEmail(email, password);
+
+      navigate("/main");
+    } catch (e: any) {
+      alertError(e as ClientResponseError);
+    }
+  }, [client, navigate, email, password]);
+
+  const onReturn = useCallback(
+    (e: KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Enter") {
+        login();
+        return;
+      }
+    },
+    [login]
+  );
+
   return (
     <LoginCont>
       <Title>Email :</Title>
@@ -140,6 +160,7 @@ function SignIn() {
         onChange={(e) => {
           setEmail(e.target.value);
         }}
+        onKeyPress={onReturn}
       />
       <Title>Password :</Title>
       <Input
@@ -149,6 +170,7 @@ function SignIn() {
         onChange={(e) => {
           setPassword(e.target.value);
         }}
+        onKeyPress={onReturn}
       />
       <Link
         onClick={async () => {
@@ -162,19 +184,7 @@ function SignIn() {
       >
         Forgot password?
       </Link>
-      <LoginButton
-        style={{ marginTop: 12 }}
-        onClick={async () => {
-          try {
-            const res = await client.users.authViaEmail(email, password);
-            console.log(res);
-
-            navigate("/main");
-          } catch (e: any) {
-            alertError(e as ClientResponseError);
-          }
-        }}
-      >
+      <LoginButton style={{ marginTop: 12 }} onClick={login}>
         <span>Sign In</span>
       </LoginButton>
     </LoginCont>
