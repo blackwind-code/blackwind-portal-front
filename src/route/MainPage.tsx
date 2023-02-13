@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import kirbyPNG from "../asset/food-coma-food.gif";
+import BaseButton from "../component/BaseButton";
 import { NoSelect } from "../style";
 
 const Cont = styled.div`
@@ -22,17 +23,10 @@ const Back = styled.a`
     text-decoration: underline;
   }
 `;
-const Button = styled.div`
+const Button = styled(BaseButton)`
   width: 240px;
   background-color: #3d62a4;
   color: white;
-  border-radius: 5px;
-  height: 36px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  cursor: pointer;
 `;
 
 export default function Page404() {

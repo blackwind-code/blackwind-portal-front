@@ -5,6 +5,8 @@ import { VPNDevice } from "../route/VPNPage";
 import { useAuthStore } from "../store/authStore";
 import { alertError } from "../util/error";
 import { getIdByToken } from "../util/token";
+import BaseButton from "./BaseButton";
+import Input from "./Input";
 
 const Background = styled.div`
   position: absolute;
@@ -35,32 +37,16 @@ const Title = styled.div`
   color: #000;
 `;
 
-const Input = styled.input`
-  width: 220px;
-  height: 24px;
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px;
-  &:focus {
-    outline-color: #3d62a4;
-  }
-`;
+
 
 const ButtonWrap = styled.div`
   display: flex;
   gap: 10px;
 `;
 
-const Button = styled.span`
-  height: 28px;
-  width: 70px;
+const Button = styled(BaseButton)`
   background-color: #3d62a4;
   color: #fff;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
 `;
 
 type DeviceAddModalProps = {

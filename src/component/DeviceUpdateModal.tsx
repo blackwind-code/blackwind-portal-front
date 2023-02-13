@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { VPNDevice } from "../route/VPNPage";
 import { useAuthStore } from "../store/authStore";
 import { alertError } from "../util/error";
+import Input from "./Input";
 
 const Background = styled.div`
   position: absolute;
@@ -32,17 +33,6 @@ const ModalCont = styled.div`
 `;
 const Title = styled.div`
   color: #000;
-`;
-
-const Input = styled.input`
-  width: 220px;
-  height: 24px;
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px;
-  &:focus {
-    outline-color: #3d62a4;
-  }
 `;
 
 const ButtonWrap = styled.div`

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import BaseButton from "../component/BaseButton";
 
 import DeviceAddModal from "../component/DeviceAddModal";
 import DeviceUpdateModal from "../component/DeviceUpdateModal";
@@ -54,17 +55,10 @@ const Row = styled.div`
   }
 `;
 
-const Button = styled.span`
-  height: 28px;
+const Button = styled(BaseButton)`
   width: 70px;
   background-color: #3d62a4;
   color: #fff;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-bottom: 3px;
-  cursor: pointer;
 `;
 
 export default function VPNPage() {

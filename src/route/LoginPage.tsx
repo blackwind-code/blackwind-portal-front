@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import DGISTPNG from "../asset/DGIST.png";
 import LoginBackground from "../asset/LoginBackground.jpg";
+import BaseButton from "../component/BaseButton";
+import Input from "../component/Input";
 import { useAuthStore } from "../store/authStore";
 import { NoSelect } from "../style";
 import { alertError } from "../util/error";
@@ -70,28 +72,11 @@ const Title = styled.div`
   color: #000;
 `;
 
-const Input = styled.input`
-  width: 220px;
-  height: 24px;
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px;
-  &:focus {
-    outline-color: #3d62a4;
-  }
-`;
 
-const LoginButton = styled.div`
+const LoginButton = styled(BaseButton)`
   width: 100%;
   background-color: #3d62a4;
   color: white;
-  border-radius: 5px;
-  height: 36px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  cursor: pointer;
 `;
 
 const Link = styled.span`
