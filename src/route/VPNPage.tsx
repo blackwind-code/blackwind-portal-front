@@ -4,6 +4,7 @@ import BaseButton from "../component/BaseButton";
 
 import DeviceAddModal from "../component/DeviceAddModal";
 import DeviceUpdateModal from "../component/DeviceUpdateModal";
+import { Column, Row } from "../component/Table";
 import { useAuthStore } from "../store/authStore";
 import { NoSelect } from "../style";
 const Wrap = styled.div`
@@ -24,39 +25,9 @@ const Cont = styled.div`
   gap: 2px;
 `;
 
-const Column = styled.div`
-  width: calc(100% - 24px);
-  display: flex;
-  justify-content: space-around;
-  gap: 20px;
-  background-color: #ccc;
-  border-bottom: 1px solid #eee;
-  padding-left: 12px;
-  padding-right: 12px;
-  font-weight: bold;
-  border-radius: 5px;
-  & div {
-    padding-top: 8px;
-    padding-bottom: 8px;
-  }
-`;
-
-const Row = styled.div`
-  width: calc(100% - 24px);
-  display: flex;
-  justify-content: space-around;
-  gap: 20px;
-  border-bottom: 1px solid #eee;
-  padding-left: 12px;
-  padding-right: 12px;
-  & div {
-    padding-top: 8px;
-    padding-bottom: 8px;
-  }
-`;
-
 const Button = styled(BaseButton)`
   width: 70px;
+  height: 28px;
   background-color: #3d62a4;
   color: #fff;
 `;
@@ -67,7 +38,7 @@ export default function VPNPage() {
 
   const [devices, setDevices] = useState<VPNDevice[]>([]);
 
-  const [AddModalVisibility, setAddModalVisibility] = useState(false);
+  const [addModalVisibility, setAddModalVisibility] = useState(false);
   const [EditModalVisibility, setEditModalVisibility] = useState(false);
 
   const [idx, setIdx] = useState<number | null>(null);
@@ -75,10 +46,9 @@ export default function VPNPage() {
   const openEditModal = useCallback(
     (idx: number) => {
       setIdx(idx);
-      console.log(devices[idx]);
       setEditModalVisibility(true);
     },
-    [devices]
+    []
   );
   const closeEditModal = useCallback(() => {
     setIdx(null);
@@ -98,7 +68,6 @@ export default function VPNPage() {
           sort: "-created",
         }
       );
-      console.log(res);
       requestRef.current = false;
       setDevices([...res] as any[]);
     })();
@@ -106,6 +75,10 @@ export default function VPNPage() {
 
   const deleteDevice = useCallback(
     (idx: number) => {
+      const c = window.confirm("Do you really want to delete this vpn item?");
+      if (c === false) {
+        return;
+      }
       const id = devices[idx].id;
       if (requestRef.current === true) {
         return;
@@ -126,7 +99,7 @@ export default function VPNPage() {
   return (
     <Wrap>
       <DeviceAddModal
-        visibility={AddModalVisibility}
+        visibility={addModalVisibility}
         closeAddModal={() => setAddModalVisibility(false)}
         refreshDevices={refreshDevices}
       />
