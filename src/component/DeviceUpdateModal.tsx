@@ -131,12 +131,12 @@ export default function DeviceUpdateModal({
               <Button
                 style={{ marginTop: 12 }}
                 onClick={async () => {
-                  console.log(id);
                   if (id === undefined) {
                     return;
                   }
                   try {
                     await client.records.update("vpn", id, {
+                      zerotier_address: zerotier_address,
                       device_type: newType,
                       description: newDescription,
                     });
