@@ -53,7 +53,6 @@ export default function UserPage() {
         const res = await client.users.getOne(
           getIdByToken(client.authStore.token)
         );
-        console.log(res);
         setEmail(res.email);
       } catch (e: any) {
         alertError(e as ClientResponseError);
