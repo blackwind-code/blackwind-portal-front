@@ -3,6 +3,7 @@ import {
   ClusterOutlined,
   UserOutlined,
   DashboardOutlined,
+  DeploymentUnitOutlined,
 } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -27,8 +28,9 @@ const menuList = [
   {
     icon: <ClusterOutlined />,
     path: "/vpn",
-    name: "vpn",
+    name: "VPN",
   },
+  { icon: <DeploymentUnitOutlined />, path: "/dns", name: "DNS" },
   {
     icon: <UserOutlined />,
     path: "/user",

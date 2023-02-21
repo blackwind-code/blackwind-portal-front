@@ -9,6 +9,7 @@ import {
 import "./App.css";
 import Header from "./component/Header";
 import Menu from "./component/Menu";
+import DNSPage from "./route/DNSPage";
 import LoginPage from "./route/LoginPage";
 import MainPage from "./route/MainPage";
 import Page404 from "./route/Page404";
@@ -27,6 +28,7 @@ function App() {
           <Route path="/main" element={<MainPage />} />
           <Route path="/user" element={<UserPage />} />
           <Route path="/vpn" element={<VPNPage />} />
+          <Route path="/dns" element={<DNSPage />}></Route>
           <Route path="/*" element={<Page404 />} />
         </Routes>
       </div>
