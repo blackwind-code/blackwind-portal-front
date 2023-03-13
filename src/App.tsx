@@ -7,6 +7,7 @@ import {
   BrowserRouter,
 } from "react-router-dom";
 import "./App.css";
+import Footer from "./component/Footer";
 import Header from "./component/Header";
 import Menu from "./component/Menu";
 import DNSPage from "./route/DNSPage";
@@ -32,6 +33,7 @@ function App() {
           <Route path="/*" element={<Page404 />} />
         </Routes>
       </div>
+      <Footer></Footer>
       <LoginContext />
     </BrowserRouter>
   );

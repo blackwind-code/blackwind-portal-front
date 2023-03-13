@@ -29,7 +29,7 @@ const Button = styled(BaseButton)`
   color: white;
 `;
 
-export default function Page404() {
+export default function MainPage() {
   return (
     <Cont>
       {/**TODO: welcome paragraph */}

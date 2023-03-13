@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const Cont = styled.div`
   width: 120px;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 100px);
   background-color: #eee;
 `;
 
