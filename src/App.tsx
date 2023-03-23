@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import {
   Routes,
   Route,
@@ -17,6 +17,8 @@ import Page404 from "./route/Page404";
 import UserPage from "./route/UserPage";
 import VPNPage from "./route/VPNPage";
 import { useAuthStore } from "./store/authStore";
+import { isVPN, parseSubDomain } from "./util/url";
+
 
 function App() {
   return (
@@ -28,7 +30,7 @@ function App() {
           <Route path="/" element={<LoginPage />} />
           <Route path="/main" element={<MainPage />} />
           <Route path="/user" element={<UserPage />} />
-          <Route path="/vpn" element={<VPNPage />} />
+          {isVPN() && <Route path="/vpn" element={<VPNPage />} />}
           <Route path="/dns" element={<DNSPage />}></Route>
           <Route path="/*" element={<Page404 />} />
         </Routes>

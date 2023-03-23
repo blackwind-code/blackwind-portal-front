@@ -6,6 +6,7 @@ import {
   DeploymentUnitOutlined,
 } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
+import { isVPN } from "../util/url";
 
 const Cont = styled.div`
   width: 120px;
@@ -25,11 +26,7 @@ const menuList = [
     path: "/main",
     name: "main",
   },
-  {
-    icon: <ClusterOutlined />,
-    path: "/vpn",
-    name: "VPN",
-  },
+
   { icon: <DeploymentUnitOutlined />, path: "/dns", name: "DNS" },
   {
     icon: <UserOutlined />,
@@ -37,6 +34,14 @@ const menuList = [
     name: "profile",
   },
 ];
+
+if (isVPN()) {
+  menuList.splice(1, 0, {
+    icon: <ClusterOutlined />,
+    path: "/vpn",
+    name: "VPN",
+  });
+}
 
 export default function Menu() {
   const location = useLocation();
